@@ -4,7 +4,6 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles({
@@ -24,7 +23,7 @@ const useStyles = makeStyles({
     marginBottom: 12,
   },
   inputFile: {
-    padding: 15
+    padding: 15,
   },
 });
 
@@ -53,8 +52,10 @@ const FormInput = (props) => {
             />
           </div>
         </CardContent>
-        <CardActions>
-          <Button size="small" onClick={onClickProcesar}>Procesar</Button>
+        <CardActions style={{flexDirection:'column'}}>
+          <Button variant="contained" color="primary" onClick={onClickProcesar}>
+            Procesar
+          </Button> 
         </CardActions>
       </Card>
     </div>

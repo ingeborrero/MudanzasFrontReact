@@ -2,7 +2,7 @@ import axios from 'axios';
 import {
   LOADING,
   GET_REGISTRO_TRAZA,
-  PROCESAR_ARCHIVO,
+  RESPONSE_PROCESAR_ARCHIVO,
 } from '../types/home.type';
 import { API_MUDANZAS } from '../config/config';
 
@@ -10,8 +10,13 @@ export const procesarArchivoAction = (data) => async (dispatch) => {
   dispatch({ type: LOADING, payload: true });
   try {
     const response = await axios.post(`${API_MUDANZAS}/api/procesomudanza/Procesar`, data);
+    debugger;
     if (response.status === 200) {
-      console.log('Información actualizada.');
+      dispatch({
+        type: RESPONSE_PROCESAR_ARCHIVO,
+        payload: response.data,
+      });
+      dispatch(getDataTrazasAction());
     }
   } catch (error) {
     if (error.response) {
