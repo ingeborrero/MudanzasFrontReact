@@ -9,12 +9,12 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Snackbar from '@material-ui/core/Snackbar';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 import FormInput from './FormInput';
 import ListLogTraza from '../../components/ListLogTraza';
 import { procesarArchivoAction, getDataTrazasAction } from '../../actions/home.action';
 import { toBase64 } from '../../utils/filesFunction';
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,11 +34,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 const Home = (props) => {
   const classes = useStyles();
-  const { procesarArchivo, getDataTrazas, traza } = props;
+  const {
+    procesarArchivo, getDataTrazas, traza, dataResponse,
+  } = props;
   const [file, setFile] = useState(null);
+  const [cedula, setCedula] = useState('');
 
   useEffect(() => {
     getDataTrazas();
@@ -50,15 +52,12 @@ const Home = (props) => {
 
     if (files && files[0]) {
       setFile(await toBase64(files[0]));
-    //   if (!validateFile(files[0])) return;
-    //   setImages((prevState) => ({ ...prevState, [name]: URL.createObjectURL(files[0]) }));
-    //   setFiles((prevState) => ({ ...prevState, [name]: files[0] }));
     }
   };
 
   const handleProcesar = () => {
     const data = {
-      cedula: '91519644',
+      cedula,
       file,
     };
     procesarArchivo(data);
@@ -90,13 +89,29 @@ const Home = (props) => {
                 onSelectFile={onSelectedFile}
                 accept=".dat,.txt"
                 onClickProcesar={handleProcesar}
+                setCedula={setCedula}
               />
             </Paper>
+            {dataResponse && dataResponse.listResultado !== undefined
+              && (
+                <Paper className={classes.paper}>
+                  <Typography component="h5" variant="h5">Resultado análisis</Typography>
+                  {dataResponse.listResultado.map((item, index) => (
+                    <>
+                      <ListItem key={index}>
+                        <ListItemText
+                          primary={`Case #${index + 1}: ${item}`}
+                        />
+                      </ListItem>
+                    </>
+                  ))}
+                </Paper>
+              )}
           </Grid>
           <Grid item xs={6}>
             <Paper className={classes.paper}>
               <Typography component="h5" variant="h5">Registro histórico</Typography>
-              {traza && traza.length>0 && <ListLogTraza data={traza} />}
+              {traza && traza.length > 0 && <ListLogTraza data={traza} />}
             </Paper>
           </Grid>
         </Grid>
@@ -108,6 +123,7 @@ const Home = (props) => {
 const mapStateToProps = ({ home }) => ({
   loading: home.loading,
   traza: home.traza,
+  dataResponse: home.dataResponse,
 });
 
 const mapDispatchToProps = {

@@ -10,7 +10,6 @@ export const procesarArchivoAction = (data) => async (dispatch) => {
   dispatch({ type: LOADING, payload: true });
   try {
     const response = await axios.post(`${API_MUDANZAS}/api/procesomudanza/Procesar`, data);
-    debugger;
     if (response.status === 200) {
       dispatch({
         type: RESPONSE_PROCESAR_ARCHIVO,
