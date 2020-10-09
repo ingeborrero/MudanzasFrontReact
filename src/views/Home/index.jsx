@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -9,9 +9,12 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Snackbar from '@material-ui/core/Snackbar';
 import FormInput from './FormInput';
+import ListLogTraza from '../../components/ListLogTraza';
 import { procesarArchivoAction, getDataTrazasAction } from '../../actions/home.action';
 import { toBase64 } from '../../utils/filesFunction';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,10 +34,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 const Home = (props) => {
   const classes = useStyles();
-  const { procesarArchivo } = props;
+  const { procesarArchivo, getDataTrazas, traza } = props;
   const [file, setFile] = useState(null);
+
+  useEffect(() => {
+    getDataTrazas();
+  }, []);
 
   const onSelectedFile = async (e) => {
     const { name } = e.target;
@@ -49,7 +57,6 @@ const Home = (props) => {
   };
 
   const handleProcesar = () => {
-    debugger;
     const data = {
       cedula: '91519644',
       file,
@@ -89,6 +96,7 @@ const Home = (props) => {
           <Grid item xs={6}>
             <Paper className={classes.paper}>
               <Typography component="h5" variant="h5">Registro histórico</Typography>
+              {traza && traza.length>0 && <ListLogTraza data={traza} />}
             </Paper>
           </Grid>
         </Grid>
