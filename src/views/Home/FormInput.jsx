@@ -31,7 +31,7 @@ const FormInput = (props) => {
   const ref = React.createRef();
   const classes = useStyles();
   const {
-    onSelectFile, accept, id, name, onClickProcesar,
+    onSelectFile, accept, id, name, onClickProcesar, setCedula,
   } = props;
 
   return (
@@ -39,7 +39,7 @@ const FormInput = (props) => {
       <Card className={classes.root} variant="outlined">
         <CardContent>
           <div>
-            <TextField id="standard-basic" label="Cédula del participante" />
+            <TextField id="standard-basic" label="Cédula del participante" onChange={(e) => { setCedula(e.target.value); }} />
           </div>
           <div className={classes.inputFile}>
             <input
@@ -52,10 +52,10 @@ const FormInput = (props) => {
             />
           </div>
         </CardContent>
-        <CardActions style={{flexDirection:'column'}}>
+        <CardActions style={{ flexDirection: 'column' }}>
           <Button variant="contained" color="primary" onClick={onClickProcesar}>
             Procesar
-          </Button> 
+          </Button>
         </CardActions>
       </Card>
     </div>

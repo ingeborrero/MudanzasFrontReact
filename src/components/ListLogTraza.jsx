@@ -24,9 +24,9 @@ const ListLogTraza = ({ data }) => {
   return (
     <>
       <List className={classes.root}>
-        {data.map((item) => (
+        {data.map((item, index) => (
           <>
-            <ListItem alignItems="flex-start">
+            <ListItem alignItems="flex-start" key={index}>
               <ListItemAvatar>
                 <Avatar>{item.id}</Avatar>
               </ListItemAvatar>
